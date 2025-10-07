@@ -1,0 +1,68 @@
+Serial,Roll,Name,CGPA_1st,CGPA_2nd,CGPA_3rd,Total_CGPA
+1,15,Sadek Hossain Asif,3.96,3.96,3.87,3.93
+2,3,Tasnim Kabir Sadik,4.0,3.85,3.83,3.893
+3,9,Anindya Kundu,3.98,3.92,3.77,3.89
+4,31,Nahin Ehsan Nilav,4.0,3.77,3.83,3.867
+5,26,Md. Abu Horaira,3.87,3.77,3.87,3.837
+6,1,Papry Rahman,3.98,3.69,3.83,3.833
+6,6,Abrar Fahyaz,3.82,3.92,3.76,3.833
+8,43,Md. Muhaiminul Islam Ninad,3.88,3.77,3.82,3.823
+9,8,Jannatul Ferdousi,4.0,3.83,3.63,3.82
+10,16,Kabya Mithun Saha,3.96,3.65,3.82,3.81
+11,10,Nafis Shyan,3.96,3.77,3.69,3.807
+12,53,Tamim Dewan Zihad,3.92,3.69,3.73,3.78
+13,36,Amina Islam,3.94,3.77,3.6,3.77
+14,39,Sharmila Surovi,3.92,3.73,3.64,3.763
+15,24,Md. Tauseef-Ur-Rahman,3.88,3.67,3.69,3.747
+15,32,Anirban Roy Sourov,3.79,3.71,3.74,3.747
+17,29,Sumaiya Tabassum,3.94,3.67,3.54,3.717
+18,14,Farzana Tasnim,3.9,3.6,3.64,3.713
+19,48,Tamzid Bin Tariq,3.78,3.65,3.66,3.697
+19,85,Abir Hasan,3.92,3.75,3.42,3.697
+21,25,Tanzila Khan,3.98,3.56,3.54,3.693
+22,34,Md. Saif Mahmud,3.87,3.46,3.67,3.667
+23,46,Faiaz Mahmud,3.84,3.4,3.69,3.643
+24,12,Shahriar Hossen Fahim,3.8,3.58,3.48,3.62
+24,35,Manobendra Biswas,3.77,3.58,3.51,3.62
+26,54,Faisal Ahmed Niloy,3.92,3.48,3.45,3.617
+27,59,Amio Rashid,3.94,3.48,3.42,3.613
+28,23,Nafiul Alim Adeeb,3.75,3.44,3.6,3.597
+29,20,Shahriar Kabir,3.72,3.58,3.47,3.59
+30,22,Tonmoy Das,3.75,3.54,3.47,3.587
+31,51,Mahmud Hasan Walid,3.72,3.54,3.48,3.58
+32,7,Tazkia Mallik,3.86,3.6,3.26,3.573
+33,49,Rubaiya Tarannum Mrittika,3.86,3.42,3.37,3.55
+34,45,Taif Ahmed Turjo,3.66,3.56,3.35,3.523
+35,37,Syed Naimul Islam,3.65,3.4,3.46,3.503
+35,40,Mominul Islam Hemal,3.63,3.73,3.15,3.503
+37,19,Marufur Rahman Mithu,3.66,3.44,3.36,3.487
+38,21,Faria Yasmin,3.68,3.27,3.34,3.43
+39,33,Md. Abu Kawser Hasib,3.69,3.46,3.13,3.427
+39,44,Shraban Karmokar Avi,3.75,3.31,3.22,3.427
+41,38,Md. Nuran Nahadi Islam,3.39,3.52,3.35,3.42
+42,47,Homaira Zahan Autoshy,3.83,3.27,3.09,3.397
+43,2,Ashraful Alam,3.64,3.27,3.19,3.367
+44,62,Sajid Al Rafi Hasan,3.7,3.29,3.04,3.343
+45,50,Abduallah Al Arman Emon,3.68,3.25,3.08,3.337
+46,4,Tawyabul Islam Tamim,3.84,3.04,3.02,3.3
+46,57,Fayek Ahmed Rahat,3.35,3.56,2.99,3.3
+48,11,Showkoth Osman Shova,3.71,3.46,2.69,3.287
+49,30,Md. Toha Hossain,3.49,2.98,3.37,3.28
+50,18,Ashesh Bar,3.51,2.98,3.21,3.233
+51,5,Sakib Hossain,3.59,3.15,2.72,3.153
+52,27,Md. Rohul Amin,3.55,3.6,2.24,3.13
+53,17,Md. Al Habib,3.76,3.33,2.21,3.1
+54,13,Mehedi Hasan Sakib,3.36,3.08,2.85,3.097
+54,56,Md. Nuruzzaman,3.38,2.9,3.01,3.097
+56,42,Hashibul Islam Sifat,3.5,2.75,2.87,3.04
+57,60,Md. Adib Ahsan,3.23,2.79,2.55,2.857
+58,64,Yuki Bhuiyan,2.93,2.62,2.93,2.827
+59,28,Ovijit Chandra Balo,2.84,2.92,2.63,2.797
+60,52,Talha Jubair Siam,3.25,2.79,2.32,2.787
+61,58,Rezaunnabi Ruhan,3.6,2.65,1.83,2.693
+62,41,Mst. Irin Sultana,2.99,2.38,1.58,2.317
+63,86,Md. Khairul Mia,0.0,3.25,2.75,2.0
+64,63,Asuma Bhuiyan,2.33,1.77,1.22,1.773
+65,55,"Dropout Candidate",0.0,0.0,0.0,0.0
+66,61,"Transfer Student",0.0,0.0,0.0,0.0
+67,65,"Academic Leave",0.0,0.0,0.0,0.0

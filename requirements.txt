@@ -1,0 +1,33 @@
+# Core Dependencies
+python-dotenv==1.1.1
+psycopg2-binary==2.9.10
+SQLAlchemy==2.0.43
+
+# Data Processing
+pandas==2.3.3
+openpyxl==3.1.5
+numpy==2.3.3
+
+# AI/LLM
+google-generativeai==0.8.3
+
+# Testing
+pytest==8.4.2
+pytest-cov==7.0.0
+pytest-asyncio==1.2.0
+pytest-mock==3.14.0
+
+# Code Quality
+black==24.10.0
+flake8==7.1.1
+mypy==1.15.0
+
+# Utilities
+requests==2.32.3
+pydantic==2.11.10
+pydantic-settings==2.11.0
+
+# Optional (for bonus features)
+fastapi==0.118.0
+uvicorn==0.37.0
+redis==6.4.0
