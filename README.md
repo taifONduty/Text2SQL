@@ -1,4 +1,4 @@
-# Text2SQL Analytics System
+# Text2SQL (Talk to your Excel Data)
 
 A production-ready system for converting natural language questions into SQL queries using Google Gemini AI, with comprehensive security, testing, and accuracy evaluation.
 
