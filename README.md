@@ -62,6 +62,38 @@ Required environment variables:
 - `DB_PORT`: Database port (default: 5432)
 - `CACHE_ENABLED`, `CACHE_URL`, `CACHE_TTL_SECONDS` (optional Redis-backed caching)
 
+4. **Database Setup (Choose One)**
+
+**Option A: Using Docker (Easier)**
+
+```bash
+# Start PostgreSQL container
+docker-compose up -d
+
+# Wait for PostgreSQL to start (10 seconds)
+sleep 10
+
+# Verify it's running
+docker ps
+```
+
+**Option B: Local PostgreSQL**
+
+```bash
+# macOS (with Homebrew)
+brew install postgresql@14
+brew services start postgresql@14
+
+# Ubuntu/Debian
+sudo apt-get install postgresql-14
+sudo service postgresql start
+
+# Windows
+# Download and install from postgresql.org
+# Start PostgreSQL service
+```
+
+
 ### Database Setup
 
 1. **Prepare data**
