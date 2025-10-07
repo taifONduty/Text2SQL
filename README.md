@@ -118,6 +118,10 @@ print(f"Row Count: {result['row_count']}")
 # Launch interactive CLI
 python -m src.cli
 
+# Export the last query result from the CLI
+# :export csv exports/last_result.csv
+# :export json exports/last_result.json
+
 # Run evaluation on all test questions
 python scripts/run_evaluation.py
 ```

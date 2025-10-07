@@ -6,11 +6,13 @@ building a normalized warehouse from raw CSV exports.
 """
 
 import argparse
-import sys
-import logging
-from typing import Optional
+import csv
 import json
+import logging
+import shlex
+import sys
 from pathlib import Path
+from typing import Optional
 
 from .text2sql_engine import Text2SQLEngine
 from .database import DatabaseManager
@@ -36,6 +38,8 @@ Available Commands:
   :tables        List all tables
   :history       Show query history
   :last          Show last query details
+  :export csv <path>   Save last result rows as CSV
+  :export json <path>  Save last result (SQL + rows) as JSON
   :clear         Clear screen
   :exit, :quit   Exit the application
 
@@ -101,7 +105,7 @@ class InteractiveCLI:
         try:
             # Check API key
             if not settings.gemini_api_key:
-                print("❌ Error: GEMINI_API_KEY not found in environment")
+                print("Error: GEMINI_API_KEY not found in environment")
                 print("   Please set it in your .env file")
                 return False
             
@@ -113,7 +117,7 @@ class InteractiveCLI:
             self.db_manager = DatabaseManager(readonly=False)
             
             if not self.db_manager.test_connection():
-                print("❌ Error: Cannot connect to database")
+                print("Error: Cannot connect to database")
                 print("   Please check your database configuration in .env")
                 return False
             
@@ -124,12 +128,61 @@ class InteractiveCLI:
             return True
         
         except Exception as e:
-            print(f"❌ Initialization failed: {e}")
+            print(f"Initialization failed: {e}")
             return False
     
+    def _export_last_result(self, fmt: str, output_path: Path) -> None:
+        """Export the last successful result to the specified format."""
+        if not self.last_result or self.last_result.get("error"):
+            print("\nNo successful query result available for export.\n")
+            return
+
+        results = self.last_result.get("results") or []
+        columns = self.last_result.get("columns") or []
+
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if fmt == "csv":
+            if not results:
+                print("\nNo rows to export.\n")
+                return
+
+            if not columns and results:
+                columns = list(results[0].keys())
+
+            try:
+                with output_path.open("w", newline="", encoding="utf-8") as handle:
+                    writer = csv.DictWriter(handle, fieldnames=columns)
+                    writer.writeheader()
+                    writer.writerows(results)
+                print(f"\n✓ Exported {len(results)} rows to {output_path}\n")
+            except Exception as exc:
+                print(f"\nFailed to export CSV: {exc}\n")
+
+        elif fmt == "json":
+            payload = {
+                "question": self.last_result.get("question"),
+                "sql_query": self.last_result.get("sql_query"),
+                "row_count": self.last_result.get("row_count"),
+                "execution_time": self.last_result.get("execution_time"),
+                "results": results,
+                "columns": columns,
+                "metadata": self.last_result.get("metadata", {}),
+            }
+            try:
+                with output_path.open("w", encoding="utf-8") as handle:
+                    json.dump(payload, handle, indent=2)
+                print(f"\n✓ Exported result payload to {output_path}\n")
+            except Exception as exc:
+                print(f"\nFailed to export JSON: {exc}\n")
+
+        else:
+            print(f"\nUnsupported export format: {fmt}\n")
+
     def handle_command(self, command: str):
         """Handle special commands."""
-        command = command.lower().strip()
+        raw_command = command.strip()
+        command = raw_command.lower()
         
         if command == ':help':
             print_help()
@@ -177,6 +230,16 @@ class InteractiveCLI:
         elif command == ':clear':
             print("\033[H\033[J", end="")
             print_banner()
+
+        elif command.startswith(':export'):
+            tokens = shlex.split(raw_command)
+            if len(tokens) < 3:
+                print("\nUsage: :export <csv|json> <output_path>\n")
+                return
+
+            fmt = tokens[1].lower()
+            output_path = Path(" ".join(tokens[2:]))
+            self._export_last_result(fmt, output_path)
         
         else:
             print(f"Unknown command: {command}")
@@ -218,7 +281,7 @@ class InteractiveCLI:
             print("-" * 70 + "\n")
         
         except Exception as e:
-            print(f"❌ Error: {e}\n")
+            print(f"Error: {e}\n")
     
     def run(self):
         """Run interactive CLI loop."""
@@ -284,7 +347,7 @@ def main():
     if args.normalize:
         csv_path = Path(args.normalize)
         if not csv_path.exists():
-            print(f"❌ CSV path not found: {csv_path}")
+            print(f"CSV path not found: {csv_path}")
             sys.exit(1)
 
         print("Loading CSV files and building normalized schema...")
@@ -301,7 +364,7 @@ def main():
                 drop_existing=args.drop_existing,
             )
         except Exception as exc:
-            print(f"❌ Normalization failed: {exc}")
+            print(f"Normalization failed: {exc}")
             sys.exit(1)
 
         print("✓ Normalization complete and data loaded into PostgreSQL\n")
