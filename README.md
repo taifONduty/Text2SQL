@@ -115,6 +115,9 @@ print(f"Row Count: {result['row_count']}")
 #### Command Line Usage
 
 ```bash
+# Launch interactive CLI
+python -m src.cli
+
 # Run evaluation on all test questions
 python scripts/run_evaluation.py
 ```
