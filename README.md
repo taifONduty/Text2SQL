@@ -271,73 +271,76 @@ Results are saved to `evaluation_results.json` and summarized in console.
 ## 📁 Project Structure
 
 ```
-text2sql-analytics/
-├── README.md                 # This file
-├── EVALUATION.md            # Evaluation results and analysis
-├── requirements.txt         # Python dependencies
-├── setup.py                 # Package setup
-├── pytest.ini               # Pytest configuration
-├── .env.example             # Environment template
-├── .gitignore              # Git ignore rules
+text2sql/
+├── README.md                 # Project overview & usage
+├── INSTALLATION_GUIDE.md     # Detailed setup walkthrough
+├── QUICKSTART.md             # 5-minute setup checklist
+├── EVALUATION.md             # Evaluation playbook & templates
+├── requirements.txt          # Python dependencies
+├── setup.py                  # Package metadata
+├── pytest.ini                # Pytest configuration (80% coverage gate)
+├── env.example               # Environment template
+├── .gitignore                # Ignore rules
 │
 ├── data/
-│   ├── raw/                # Raw data files
-│   │   └── northwind.xlsx
-│   └── schema/             # Database schema
-│       └── schema.sql
+│   ├── raw/
+│   │   ├── northwind/        # Curated Northwind CSV exports
+│   │   ├── hospital patient records/
+│   │   ├── Atlas/
+│   │   └── result/
+│   ├── query_history.db      # SQLite store for CLI/API history
+│   └── schema/schema.sql     # Canonical schema applied by setup_database.py
 │
-├── src/                    # Source code
-│   ├── __init__.py
-│   ├── config.py           # Configuration management
-│   ├── database.py         # Database operations
-│   ├── data_loader.py      # Data normalization pipeline
-│   ├── query_validator.py  # SQL validation & security
-│   ├── text2sql_engine.py  # Gemini API integration
-│   └── utils.py            # Utility functions
+├── docs/                     # PNGs/diagrams for README
+│   └── architecture.png
 │
-├── tests/                  # Test suite
-│   ├── __init__.py
-│   ├── conftest.py         # Pytest fixtures
-│   ├── test_query_validator.py
-│   ├── test_database.py
-│   ├── test_data_loader.py
-│   ├── test_text2sql_engine.py
-│   └── test_accuracy/      # Accuracy tests
-│       ├── __init__.py
-│       ├── test_simple_queries.py
-│       ├── test_intermediate_queries.py
-│       └── test_complex_queries.py
+├── src/                      # Application code
+│   ├── api.py                # FastAPI app (REST endpoints + dashboard)
+│   ├── cache.py              # Redis / in-memory caching facade
+│   ├── cli.py                # Interactive CLI (supports normalization + export)
+│   ├── config.py             # Settings via pydantic-settings
+│   ├── data_loader.py        # Legacy Excel/CSV pipeline utilities
+│   ├── database.py           # Connection manager, query execution, EXPLAIN helper
+│   ├── history.py            # SQLite-backed query history
+│   ├── normalizer.py         # Heuristic CSV normalisation engine
+│   ├── query_validator.py    # SELECT-only validation & sanitisation
+│   ├── text2sql_engine.py    # Gemini integration + tie-handling logic
+│   └── utils.py              # Shared helpers (logging, sanitisation)
 │
-├── scripts/                # Utility scripts
-│   ├── setup_database.py   # Database initialization
-│   └── run_evaluation.py   # Accuracy evaluation
+├── scripts/                  # Maintenance / benchmarking tools
+│   ├── setup_database.py     # Loads curated CSVs into schema.sql layout
+│   ├── run_evaluation.py     # 20-question heuristic evaluation
+│   ├── run_spider_benchmark.py# Random Spider benchmark sampler
+│   ├── verify_setup.py       # Environment + DB + Gemini validation
+│   ├── load_csv_data.py      # Legacy loader
+│   └── download_northwind.py # Optional raw-download helper
 │
-└── notebooks/              # Jupyter notebooks
-    └── analysis.ipynb      # Data analysis
+├── tests/                    # Pytest suites (unit/integration/accuracy/api/cache/etc.)
+│   └── ...                   # See tree for individual modules
+│
+└── notebooks/
+    └── analysis.ipynb        # Exploratory notebook
 ```
 
 ## 🗄️ Database Schema
 
-The Northwind database is normalized to **3rd Normal Form (3NF)** with:
+The shipped Northwind dataset is mapped to the curated PostgreSQL schema in `data/schema/schema.sql`. Key tables include:
 
-**Tables:**
-- `categories`: Product categories
-- `suppliers`: Product suppliers
-- `products`: Products with pricing and inventory
-- `customers`: Customer information
-- `employees`: Employee records with hierarchy
-- `shippers`: Shipping companies
-- `orders`: Customer orders
-- `order_details`: Order line items (junction table)
-- `region`, `territories`, `employee_territories`: Geographic data
+| Table | Description |
+| --- | --- |
+| `categories`, `suppliers`, `products` | Core product catalog |
+| `customers`, `employees`, `shippers` | Participants in the order flow |
+| `orders`, `order_details` | Fact tables for sales activity |
+| `region`, `territories`, `employee_territories` | Geography & sales territory mapping |
+| `result` (optional) | Example custom dataset loaded from `data/raw/result/Result.csv` |
 
-**Key Features:**
-- Primary keys on all tables
-- Foreign key constraints with CASCADE rules
-- CHECK constraints for data validation
-- Indexes on frequently queried columns
-- Composite indexes for common JOIN patterns
-- Audit timestamps (created_at, updated_at)
+Schema highlights:
+
+- Primarily 3NF design with explicit primary keys, FKs, cascading rules.
+- Constraints (`CHECK`, `NOT NULL`) to enforce data quality.
+- Indexes on common joins (`orders.customer_id`, `products.category_id`, etc.) plus composite indexes and optional materialized views added by `schema.sql`.
+- Timestamps (`created_at`, `updated_at`) for audit purposes.
+- Setup script also provisions a read-only role (`northwind_readonly`) used by the Text2SQL engine.
 
 ## 📈 Example Queries
 
