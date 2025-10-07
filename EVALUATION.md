@@ -293,7 +293,7 @@ This Text2SQL Analytics System successfully demonstrates:
 
 ---
 
-**Evaluated by**: [Your Name]
-**Date**: [Date]
+**Evaluated by**: Taif Ahmed Turjo
+**Date**: 07/09/2025
 **Version**: 1.0.0
 
