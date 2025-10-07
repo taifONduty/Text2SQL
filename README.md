@@ -91,28 +91,32 @@ Required environment variables:
 - `DB_ADMIN_PASSWORD`: PostgreSQL admin password
 - `DB_HOST`: Database host (default: localhost)
 - `DB_PORT`: Database port (default: 5432)
+- `CACHE_ENABLED`, `CACHE_URL`, `CACHE_TTL_SECONDS` (optional Redis-backed caching)
 
 ### Database Setup
 
-1. **Download Northwind Database**
+1. **Prepare data**
+   - Curated CSV exports already live under `data/raw/northwind/`.
+   - If you replace them, keep the same filenames (`categories.csv`, `orders.csv`, …).
+   - Any extra datasets can be added as additional folders under `data/raw/`.
 
-Download the Northwind database Excel file from one of these sources:
-- [Maven Analytics](https://maven-datasets.s3.amazonaws.com/Northwind+Traders/Northwind+Traders.zip)
-- [GitHub - Northwind PostgreSQL](https://github.com/pthom/northwind_psql)
-
-Place the file at: `data/raw/northwind.xlsx`
-
-2. **Run database setup**
+2. **Load the database**
 ```bash
 python scripts/setup_database.py
 ```
 
 This will:
-- Create the `northwind` database
-- Create normalized schema (3NF) with proper indexes
-- Load and normalize data from Excel
-- Create read-only user for secure query execution
-- Verify setup
+- Create the `northwind` database (if needed)
+- Apply the ready-made schema in `data/schema/schema.sql`
+- Load the CSVs from `data/raw/northwind/` (plus optional datasets such as `data/raw/result/Result.csv`)
+- Create the read-only role used by the Text2SQL engine
+- Verify row counts table-by-table
+
+3. **Optional: normalise custom CSVs**
+   ```bash
+   python -m src.cli --normalize path/to/your/csv_dir --drop-existing
+   ```
+   The normalization pipeline detects encodings/delimiters, infers keys, splits dimension tables, and writes the results into PostgreSQL.
 
 ### Usage
 
@@ -179,6 +183,26 @@ curl -X POST http://localhost:8000/v1/explain \
 - Query results are cached automatically (Redis if `CACHE_URL` is configured, otherwise an in-memory fallback) for `CACHE_TTL_SECONDS`.
 - Persistent query history lives in `data/query_history.db`, enabling reuse of successful SQL for repeated questions and reporting via `/history/*` endpoints.
 - Configure `.env` to point at an external Redis instance for shared caching in production environments.
+
+## 📊 Benchmarking & Evaluation
+
+### Built-in evaluation suite
+```bash
+python scripts/run_evaluation.py
+```
+Generates heuristic accuracy metrics across the curated set of 20 Northwind questions and writes `evaluation_results.json`.
+
+### Spider-style benchmark (random samples)
+```bash
+python scripts/run_spider_benchmark.py \
+  --csv data/spidertest/spider_text_sql.csv \
+  --samples 100 \
+  --seed 42 \
+  --execute \
+  --compare \
+  --output benchmark_run.csv
+```
+This samples questions/SQL pairs from the Spider dataset clone, runs them through the engine (respecting Gemini rate limits), and captures success/validity/exact-match metrics.
 
 ## 🧪 Testing
 
