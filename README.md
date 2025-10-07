@@ -34,7 +34,7 @@ This project implements a Text2SQL analytics system that:
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd text2sql-analytics
+cd text2sql
 ```
 
 2. **Create virtual environment**
@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 4. **Configure environment variables**
 ```bash
-cp .env.example .env
+cp .env.mock .env
 # Edit .env with your credentials
 ```
 
@@ -81,7 +81,7 @@ This will:
 - Create the read-only role used by the Text2SQL engine
 - Verify row counts table-by-table
 
-3. **Optional: normalise custom CSVs**
+3. **Optional: Add any CSVs (with automated Normalization)**
    ```bash
    python -m src.cli --normalize path/to/your/csv_dir --drop-existing
    ```
