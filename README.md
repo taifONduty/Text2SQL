@@ -441,13 +441,7 @@ Key tested components:
 
 MIT License - See LICENSE file for details
 
-## 👤 Author
-
-**Makebell Backend Engineer Assessment**
-- Documentation: [Project Requirements](Makebell_Home_Task.pdf)
-- Contact: asifsadek509@gmail.com
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Northwind Database: Microsoft SQL Server Samples
 - Google Gemini API: Google AI
