@@ -19,7 +19,7 @@ This project implements a Text2SQL analytics system that:
 
 ## 🏗️ Architecture
 
-![Architecture diagram](docs/Blank diagram-3.png)
+![Architecture diagram](docs/architecture.png)
 
 ## 🚀 Quick Start
 
